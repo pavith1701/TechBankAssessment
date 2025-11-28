@@ -13,11 +13,9 @@ class LandingPageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cardName: UILabel!
     @IBOutlet weak var cardPrize: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        imgCard.layer.cornerRadius = 10
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imgCard.layer.cornerRadius = 28     // or custom radius
         imgCard.clipsToBounds = true
     }
-    
 }

@@ -174,7 +174,10 @@ extension LandingPageViewController: UICollectionViewDelegate,UICollectionViewDa
             if let imgUrl = myNFTList[indexPath.row].imageUrl {
                 let w = cell.imgCard.bounds.width
                 let h = cell.imgCard.bounds.height
-                cell.imgCard.loadImage(from: imgUrl, targetSize: CGSize(width: w, height: h))
+                DispatchQueue.main.async {
+                    cell.imgCard.loadImage(from: imgUrl, targetSize: CGSize(width: w, height: h))
+                }
+                
             }
             cell.cardName.text = myNFTList[indexPath.row].title
             let price:Double = myNFTList[indexPath.row].price ?? 0.0
@@ -186,7 +189,10 @@ extension LandingPageViewController: UICollectionViewDelegate,UICollectionViewDa
             if let imgUrl = landPageList[indexPath.row].imageUrl {
                 let w = cell.imgCard.bounds.width
                 let h = cell.imgCard.bounds.height
-                cell.imgCard.loadImage(from: imgUrl, targetSize: CGSize(width: w, height: h))
+                DispatchQueue.main.async {
+                    cell.imgCard.loadImage(from: imgUrl, targetSize: CGSize(width: w, height: h))
+                }
+                
             }
             cell.cardName.text = landPageList[indexPath.row].title
             let price:Double = landPageList[indexPath.row].price ?? 0.0
@@ -227,7 +233,7 @@ extension LandingPageViewController: UICollectionViewDelegate,UICollectionViewDa
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let spacing: CGFloat = 10
-        let totalSpacing = spacing * 7
+        let totalSpacing = spacing * 3
         
         let width = (collectionView.frame.width - totalSpacing) / 2
         
@@ -237,19 +243,19 @@ extension LandingPageViewController: UICollectionViewDelegate,UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return 7
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return 7
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        return UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
     }
     
 }
