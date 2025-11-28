@@ -9,6 +9,8 @@ import UIKit
 
 class PurchasePageViewController: UIViewController {
     
+    var myCoinsList: [CoinListDataModel] = []
+    let appdelegate = UIApplication.shared.delegate as! AppDelegate
     var imgURL: String?
     var itemName: String?
     var itemPrice: String?
@@ -36,6 +38,7 @@ class PurchasePageViewController: UIViewController {
         self.itemTypeLabel.text = itemType
         self.descriptionTextView.text = itemDescription
         self.descriptionTextView.isEditable = false
+        getWalletBal()
     }
     
 
@@ -55,7 +58,20 @@ class PurchasePageViewController: UIViewController {
             
         }
     }
-    
+    func getWalletBal() {
+        
+        APIService.shared.getRequest(path: "/v2/beetobeeMywalletBalance?userid=user-001&email=jane.cooper@example.com") { (result: Result<CoinListModel, Error>) in
+            switch result {
+            case .success(let data):
+                print("NFT List:", data.coins)
+                self.myCoinsList = data.coins
+                self.appdelegate.myWalletBalance = self.myCoinsList[3].balance
+                print(self.appdelegate.myWalletBalance)
+            case .failure(let error):
+                print("Error:", error.localizedDescription)
+            }
+        }
+    }
 }
 extension PurchasePageViewController: BuyNFTPageViewControllerprotocol {
     func didBuyNFT() {

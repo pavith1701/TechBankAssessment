@@ -20,7 +20,7 @@ class BuyNFTPageViewController: UIViewController {
     var itemTyp: String?
     var buyPrice: String?
     var delegate: BuyNFTPageViewControllerprotocol?
-    
+    let appdelegate = UIApplication.shared.delegate as! AppDelegate
     @IBOutlet weak var pagePaymentDtlsView: UIView!
     @IBOutlet weak var cardImgView: UIImageView!
     @IBOutlet weak var itemNameLabel: UILabel!
@@ -32,6 +32,11 @@ class BuyNFTPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let walletBal:Double = appdelegate.myWalletBalance ?? 0.0
+        let walletBalString:String = String(walletBal)
+        
+        self.walletBalanceLabel.text = walletBalString
         self.pagePaymentDtlsView.layer.cornerRadius = 30
         let w = cardImgView.bounds.width
         let h = cardImgView.bounds.height

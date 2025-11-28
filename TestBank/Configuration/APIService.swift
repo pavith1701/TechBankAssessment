@@ -24,12 +24,24 @@ class APIService {
             "Content-Type": "application/json"
         ]
         showLoader()
-        AF.request(url,method:.get,parameters: params,headers: header).validate().responseDecodable(of: T.self) { result in
+        AF.request(url,method:.get,parameters: params,headers: header).validate(statusCode: 200..<300).responseDecodable(of: T.self) { response in
             self.hideLoader()
-            switch result.result {
+            switch response.result {
             case .success(let decoded):
                 complectionHandler(.success(decoded))
             case.failure(let error):
+                if let statusCode = response.response?.statusCode,
+                   let data = response.data,
+                   let serverError = try? JSONDecoder().decode(ServerError.self, from: data)
+                {
+                    let customError = NSError(
+                        domain: "",
+                        code: statusCode,
+                        userInfo: [NSLocalizedDescriptionKey: serverError.error]
+                    )
+                    complectionHandler(.failure(customError))
+                    return
+                }
                 complectionHandler(.failure(error))
             }
             
@@ -141,19 +153,19 @@ class APIService {
         ) { urlRequest in
             urlRequest.httpBody = bodyData
         }
-        .validate()
-        .responseDecodable(of: T.self) { result in
+        .validate(statusCode: 200..<300)
+        .responseDecodable(of: T.self) { response in
             
             self.hideLoader()
 
-            switch result.result {
+            switch response.result {
 
             case .success(let decoded):
                 complectionHandler(.success(decoded))
 
             case .failure(let error):
-                if let statusCode = result.response?.statusCode,
-                   let data = result.data,
+                if let statusCode = response.response?.statusCode,
+                   let data = response.data,
                    let serverError = try? JSONDecoder().decode(ServerError.self, from: data)
                 {
                     let customError = NSError(
